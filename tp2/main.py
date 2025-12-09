@@ -48,12 +48,11 @@ def find_roman_numeral(image_path, api_key=None):
     prompt = """Analyze this image and identify any Roman numerals present. 
     Roman numerals use the letters I, V, X, L, C, D, M.
     
-    Please respond with:
-    1. The Roman numeral(s) you find in the image
-    2. If multiple Roman numerals are present, list them all
-    3. If no Roman numerals are found, respond with "No Roman numerals found"
+    Respond with ONLY the Roman numeral(s) found in the image, separated by commas if multiple.
+    If no Roman numerals are found, respond with "No Roman numerals found".
     
-    Be precise and only identify actual Roman numerals, not other text or symbols."""
+    Be precise and only identify actual Roman numerals, not other text or symbols.
+    Do not provide explanations or additional text, just the numerals."""
     
     try:
         # Generate content using the image and prompt
@@ -61,6 +60,18 @@ def find_roman_numeral(image_path, api_key=None):
         
         # Extract the text response
         result = response.text.strip()
+        
+        # Clean up the response - take only the first line if multiple lines
+        # and remove numbered list formatting
+        lines = result.split('\n')
+        if lines:
+            # Get the first non-empty line
+            first_line = lines[0].strip()
+            # Remove leading numbers and dots (e.g., "1. " or "2. ")
+            if first_line and first_line[0].isdigit() and len(first_line) > 2 and first_line[1] in ['.', ')']:
+                first_line = first_line[2:].strip()
+            result = first_line
+        
         return result
     
     except Exception as e:
