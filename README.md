@@ -209,12 +209,29 @@ pip install -r requirements.txt
 
 ### Configuration
 
-1. Téléchargez les fichiers du modèle depuis [mariyakhannn/imagecolorizer](https://github.com/mariyakhannn/imagecolorizer) :
-   - `colorization_deploy_v2.prototxt`
-   - `pts_in_hull.npy`
-   - `colorization_release_v2.caffemodel` (~300MB)
+**⚠️ Important :** Les fichiers du modèle ne sont pas inclus dans ce dépôt car ils sont trop volumineux (le fichier `.caffemodel` fait ~300MB). Vous devez les télécharger manuellement.
 
-2. Placez les fichiers dans le répertoire `tp4/models/` :
+1. **Créez le répertoire `models/`** dans `tp4/` :
+```bash
+mkdir tp4/models
+```
+
+2. **Téléchargez les fichiers du modèle** depuis [mariyakhannn/imagecolorizer](https://github.com/mariyakhannn/imagecolorizer) :
+
+   - **`colorization_deploy_v2.prototxt`** : 
+     - Lien direct : https://raw.githubusercontent.com/mariyakhannn/imagecolorizer/main/colorization_deploy_v2.prototxt
+     - Ou depuis le dépôt : https://github.com/mariyakhannn/imagecolorizer/blob/main/colorization_deploy_v2.prototxt
+   
+   - **`pts_in_hull.npy`** :
+     - Lien direct : https://github.com/mariyakhannn/imagecolorizer/raw/main/pts_in_hull.npy
+     - Ou depuis le dépôt : https://github.com/mariyakhannn/imagecolorizer/blob/main/pts_in_hull.npy
+   
+   - **`colorization_release_v2.caffemodel`** (~300MB) :
+     - Lien direct : https://github.com/mariyakhannn/imagecolorizer/raw/main/colorization_release_v2.caffemodel
+     - Ou depuis le dépôt : https://github.com/mariyakhannn/imagecolorizer/blob/main/colorization_release_v2.caffemodel
+     - **Note :** Ce fichier est volumineux, le téléchargement peut prendre du temps.
+
+3. **Placez les fichiers téléchargés** dans le répertoire `tp4/models/` :
 ```
 tp4/
 ├── main.py
@@ -222,6 +239,14 @@ tp4/
     ├── colorization_deploy_v2.prototxt
     ├── pts_in_hull.npy
     └── colorization_release_v2.caffemodel
+```
+
+**Alternative :** Vous pouvez cloner le dépôt [mariyakhannn/imagecolorizer](https://github.com/mariyakhannn/imagecolorizer) et copier les fichiers nécessaires :
+```bash
+git clone https://github.com/mariyakhannn/imagecolorizer.git
+cp imagecolorizer/colorization_deploy_v2.prototxt tp4/models/
+cp imagecolorizer/pts_in_hull.npy tp4/models/
+cp imagecolorizer/colorization_release_v2.caffemodel tp4/models/
 ```
 
 ### Utilisation
@@ -290,7 +315,7 @@ pip install -r requirements.txt
 - Le fichier `.env` doit être ajouté à `.gitignore` pour garder votre clé API sécurisée
 - L'Exercice 1 nécessite des données d'entraînement dans la structure de répertoire `data/`
 - L'Exercice 3 nécessite que le fichier `cameraman.tif` soit présent dans le répertoire `tp3/`
-- L'Exercice 4 nécessite les fichiers du modèle dans le répertoire `tp4/models/` (voir Configuration)
+- L'Exercice 4 nécessite les fichiers du modèle dans le répertoire `tp4/models/` (voir Configuration ci-dessus). Ces fichiers ne sont pas inclus dans le dépôt et doivent être téléchargés manuellement depuis [mariyakhannn/imagecolorizer](https://github.com/mariyakhannn/imagecolorizer)
 - Tous les exercices prennent en charge les formats d'image courants (PNG, JPEG, TIFF, etc.)
 
 ## Références
