@@ -15,7 +15,6 @@ shapes/
 │   └── test/
 ├── tp2/                # Exercice 2 : Détection de Chiffres Romains
 │   ├── main.py         # Implémentation Gemini AI
-│   ├── README.md       # Documentation détaillée pour exo2
 │   └── data/           # Images d'exemple avec chiffres romains
 └── README.md           # Ce fichier
 ```
@@ -104,7 +103,6 @@ python tp2/main.py tp2/data/numeral-1.png
 
 Le programme analyse l'image et affiche tous les chiffres romains trouvés.
 
-Pour plus de détails, voir [tp2/README.md](tp2/README.md)
 
 ---
 
