@@ -394,6 +394,191 @@ Si des modifications sont appliquées (vitesse ou suppression de silence), les f
 
 ---
 
+## Exercice 5b : Ajout de Bruit et Réduction de Bruit Audio
+
+**Emplacement :** Répertoire `tp-audio/tp2.py`
+
+### Description
+Un programme Python pour ajouter du bruit artificiel (bruit blanc gaussien) à un fichier audio, puis tenter de restaurer le son original via un filtre passe-bas. Ce programme permet d'étudier les effets du bruit sur les signaux audio et les techniques de réduction de bruit.
+
+> **Note :** Le code pour ajouter du bruit gaussien s'est basé sur une solution de [Stack Overflow](https://stackoverflow.com/q) par user13832229 (CC BY-SA 4.0).
+
+### Fonctionnalités
+- Ajout de bruit gaussien (bruit blanc) à un fichier audio
+- Calcul du RMS (Root Mean Square) du signal original
+- Réduction de bruit avec un filtre passe-bas Butterworth
+- Génération automatique de graphiques (amplitude et spectrogrammes) pour les signaux bruités et filtrés
+- Sauvegarde organisée dans des dossiers séparés (`noisy/` et `filtered/`)
+
+### Prérequis
+- Python 3.7+
+- librosa (traitement audio)
+- soundfile (sauvegarde audio)
+- matplotlib (visualisation)
+- numpy
+- scipy (filtres numériques)
+- ffmpeg (requis par librosa pour lire les fichiers MP3)
+
+### Installation
+```bash
+pip install -r requirements.txt
+```
+
+### Utilisation
+
+**Ajouter du bruit à un fichier audio :**
+```bash
+# Avec la déviation standard par défaut (0.05)
+python tp-audio/tp2.py add-noise hello.mp3
+
+# Avec une déviation standard personnalisée
+python tp-audio/tp2.py add-noise hello.mp3 --std 0.01
+```
+
+**Filtrer l'audio bruité avec un filtre passe-bas :**
+```bash
+# Avec la fréquence de coupure par défaut (3000 Hz)
+python tp-audio/tp2.py filter noisy/hello_noisy.wav
+
+# Avec une fréquence de coupure personnalisée
+python tp-audio/tp2.py filter noisy/hello_noisy.wav --cutoff 4000
+```
+
+### Résultats générés
+
+**Fichiers dans `noisy/` :**
+- **`{nom}_noisy.wav`** : Fichier audio avec bruit gaussien ajouté
+- **`{nom}_noisy_canal_gauche.png`** : Graphique d'amplitude du canal gauche (bruité)
+- **`{nom}_noisy_canal_droit.png`** : Graphique d'amplitude du canal droit (bruité)
+- **`{nom}_noisy_spectrogramme_canal_gauche.png`** : Spectrogramme du canal gauche (bruité)
+- **`{nom}_noisy_spectrogramme_canal_droit.png`** : Spectrogramme du canal droit (bruité)
+
+**Fichiers dans `filtered/` :**
+- **`{nom}_filtered_lowpass_{freq}Hz.wav`** : Fichier audio filtré (passe-bas)
+- **`{nom}_filtered_lowpass_{freq}Hz_canal_gauche.png`** : Graphique d'amplitude du canal gauche (filtré)
+- **`{nom}_filtered_lowpass_{freq}Hz_canal_droit.png`** : Graphique d'amplitude du canal droit (filtré)
+- **`{nom}_filtered_lowpass_{freq}Hz_spectrogramme_canal_gauche.png`** : Spectrogramme du canal gauche (filtré)
+- **`{nom}_filtered_lowpass_{freq}Hz_spectrogramme_canal_droit.png`** : Spectrogramme du canal droit (filtré)
+
+### Paramètres
+
+**Mode `add-noise` :**
+- **`--std <float>`** : Déviation standard du bruit (défaut: 0.05)
+  - Plus la valeur est élevée, plus le bruit est fort
+  - Valeurs typiques : 0.001 (faible) à 0.1 (fort)
+
+**Mode `filter` :**
+- **`--cutoff <float>`** : Fréquence de coupure en Hz (défaut: 3000.0)
+  - Les fréquences au-dessus de cette valeur sont atténuées
+  - Valeurs typiques : 2000-8000 Hz selon le type d'audio
+
+### Comment ça fonctionne
+
+1. **Ajout de bruit** :
+   - Génération de bruit gaussien avec `np.random.normal(0, std_noise)`
+   - Addition du bruit au signal audio original
+   - Calcul du RMS pour mesurer l'amplitude du signal
+
+2. **Réduction de bruit (filtre passe-bas)** :
+   - Utilisation d'un filtre Butterworth d'ordre 4
+   - Le filtre passe-bas supprime les hautes fréquences (où le bruit est souvent présent)
+   - Utilisation de `scipy.signal.filtfilt()` pour un filtrage bidirectionnel (pas de décalage de phase)
+   - Les basses fréquences (contenu audio principal) sont préservées
+
+### Structure des dossiers
+
+```
+tp-audio/
+├── noisy/          # Fichiers audio bruités et leurs graphiques
+└── filtered/       # Fichiers audio filtrés et leurs graphiques
+```
+
+---
+
+## Exercice 5c : Transcription Vocale et Extraction de Mots-clés
+
+**Emplacement :** Répertoire `tp-audio/tp3.py`
+
+### Description
+Un programme Python pour transcrire un fichier audio en texte en utilisant la reconnaissance vocale, puis utiliser Gemini AI pour identifier automatiquement 3 mots-clés à partir du texte transcrit.
+
+### Fonctionnalités
+- Transcription audio en texte avec Google Speech Recognition
+- Comptage automatique du nombre de mots dans la transcription
+- Extraction de 3 mots-clés avec Gemini AI
+- Support des fichiers audio WAV
+- Reconnaissance vocale en anglais (en-US)
+
+### Prérequis
+- Python 3.7+
+- SpeechRecognition (reconnaissance vocale)
+- google-generativeai (API Gemini)
+- python-dotenv (gestion des variables d'environnement)
+- pydub (traitement audio, requis par SpeechRecognition)
+- Clé API Google Gemini (voir Configuration)
+
+### Installation
+```bash
+pip install -r requirements.txt
+```
+
+**Note :** Pour utiliser la transcription, vous devez également installer `ffmpeg` (voir Exercice 5).
+
+### Configuration
+
+1. Obtenez votre clé API Gemini depuis [Google AI Studio](https://makersuite.google.com/app/apikey)
+2. Créez ou modifiez le fichier `.env` à la racine du projet :
+```
+GEMINI_API_KEY=votre_clé_api_ici
+```
+
+### Utilisation
+
+**Transcrire un fichier audio et extraire les mots-clés :**
+```bash
+python tp-audio/tp3.py speech.wav
+```
+
+### Résultats
+
+Le programme affiche :
+- Le texte transcrit depuis l'audio
+- Le nombre de mots trouvés dans la transcription
+- 3 mots-clés identifiés par Gemini AI
+
+### Exemple de sortie
+
+```
+Transcribing audio file: speech.wav
+Language: English (en-US)
+--------------------------------------------------
+Transcribed text:
+Hello world this is a test about artificial intelligence
+--------------------------------------------------
+Number of words found: 8
+--------------------------------------------------
+Extracting 3 key words using Gemini...
+Key words identified:
+  1. artificial intelligence
+  2. test
+  3. hello
+```
+
+### Comment ça fonctionne
+
+1. **Transcription** : `speech_recognition` utilise Google Speech Recognition pour convertir l'audio en texte
+2. **Ajustement du bruit** : Le programme ajuste automatiquement le bruit ambiant pour améliorer la reconnaissance
+3. **Comptage de mots** : Le texte transcrit est divisé en mots et compté
+4. **Extraction de mots-clés** : Gemini AI analyse le texte et identifie les 3 mots-clés les plus représentatifs
+
+### Limitations
+
+- La transcription fonctionne uniquement en anglais (en-US)
+- Nécessite une connexion Internet pour Google Speech Recognition et Gemini AI
+- Les fichiers audio doivent être en format WAV (ou un format supporté par `speech_recognition`)
+
+---
+
 ## Installation (Toutes les Dépendances)
 
 Installez tous les packages requis pour les quatre exercices :
@@ -406,12 +591,15 @@ pip install -r requirements.txt
 - `tensorflow` - Framework d'apprentissage profond (Exercice 1)
 - `numpy` - Calcul numérique
 - `scikit-learn` - Utilitaires d'apprentissage automatique
-- `google-generativeai` - API Gemini AI (Exercice 2)
+- `scipy` - Calcul scientifique et filtres numériques (Exercice 5b)
+- `google-generativeai` - API Gemini AI (Exercice 2, 5c)
 - `Pillow` - Traitement d'images
-- `python-dotenv` - Gestion des variables d'environnement (Exercice 2)
+- `python-dotenv` - Gestion des variables d'environnement (Exercice 2, 5c)
 - `opencv-python` - Bibliothèque de vision par ordinateur (Exercice 3)
 - `librosa` - Traitement et analyse audio (Exercice 5)
 - `soundfile` - Lecture/écriture de fichiers audio (Exercice 5)
+- `SpeechRecognition` - Reconnaissance vocale (Exercice 5c)
+- `pydub` - Traitement audio (Exercice 5c)
 
 ---
 
@@ -429,5 +617,6 @@ pip install -r requirements.txt
 - **Exercice 3** : Basé sur le tutoriel [Détection de contour avec OpenCV et Python](https://www.aranacorp.com/fr/detection-de-contour-avec-opencv-et-python/#google_vignette) par AranaCorp
 - **Exercice 4** : Modèles de colorisation provenant de [mariyakhannn/imagecolorizer](https://github.com/mariyakhannn/imagecolorizer)
 - **Exercice 5** : Code de visualisation (spectrogramme et diagramme d'amplitude) basé sur [Visualisation de données audio en Python](https://www.kaggle.com/code/ghazouanihaythem/tmm-visualisation-de-donn-es-audio-en-python#%C3%89tape-3.-Spectre-de-Fr%C3%A9quence-/-Spectrogramme) par ghazouanihaythem sur Kaggle
+- **Exercice 5b** : Code pour ajouter du bruit gaussien basé sur une solution de [Stack Overflow](https://stackoverflow.com/q) par user13832229 (CC BY-SA 4.0)
 
 ---

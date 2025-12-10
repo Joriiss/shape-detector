@@ -8,3 +8,5 @@ python-dotenv
 opencv-python
 librosa
 soundfile
+SpeechRecognition
+pydub
