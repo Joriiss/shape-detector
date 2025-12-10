@@ -617,6 +617,6 @@ pip install -r requirements.txt
 - **Exercice 3** : Basé sur le tutoriel [Détection de contour avec OpenCV et Python](https://www.aranacorp.com/fr/detection-de-contour-avec-opencv-et-python/#google_vignette) par AranaCorp
 - **Exercice 4** : Modèles de colorisation provenant de [mariyakhannn/imagecolorizer](https://github.com/mariyakhannn/imagecolorizer)
 - **Exercice 5** : Code de visualisation (spectrogramme et diagramme d'amplitude) basé sur [Visualisation de données audio en Python](https://www.kaggle.com/code/ghazouanihaythem/tmm-visualisation-de-donn-es-audio-en-python#%C3%89tape-3.-Spectre-de-Fr%C3%A9quence-/-Spectrogramme) par ghazouanihaythem sur Kaggle
-- **Exercice 5b** : Code pour ajouter du bruit gaussien basé sur une solution de [Stack Overflow](https://stackoverflow.com/q) par user13832229 (CC BY-SA 4.0)
+- **Exercice 5b** : Code pour ajouter du bruit gaussien basé sur une solution de [Stack Overflow](https://stackoverflow.com/questions/63898448/add-noise-to-audio-file-and-reconvert-the-noisy-signal-using-librosa-python) par user13832229 (CC BY-SA 4.0)
 
 ---
