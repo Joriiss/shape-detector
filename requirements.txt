@@ -1,6 +1,7 @@
 tensorflow
 numpy
 scikit-learn
+scipy
 google-generativeai
 Pillow
 python-dotenv
