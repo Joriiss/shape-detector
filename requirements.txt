@@ -6,3 +6,4 @@ Pillow
 python-dotenv
 opencv-python
 librosa
+soundfile
