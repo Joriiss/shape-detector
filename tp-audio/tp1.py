@@ -72,3 +72,35 @@ plt.tight_layout()
 plt.savefig('canal_droit.png', dpi=150, bbox_inches='tight')
 plt.close()
 print("Graphique du canal droit sauvegardé: canal_droit.png")
+
+# Créer un graphique pour le spectrogramme du canal gauche (left channel)
+plt.figure(figsize=(10, 5))
+# Générer le spectrogramme du canal gauche (l_channel) avec les paramètres spécifiés
+plt.specgram(l_channel, Fs=sample_freq, vmin=-20, vmax=50)
+# Ajouter un titre au graphique
+plt.title('Spectrogramme - Canal Gauche')
+# Étiqueter l'axe des y avec "Fréquence (Hz)"
+plt.ylabel('Fréquence (Hz)')
+# Étiqueter l'axe des x avec "Temps (s)"
+plt.xlabel('Temps (s)')
+# Définir les limites de l'axe des x pour afficher uniquement la partie de l'audio correspondant à sa durée
+plt.xlim(0, t_audio)
+# Ajouter une barre de couleur pour indiquer l'intensité du spectre
+plt.colorbar()
+plt.tight_layout()
+plt.savefig('spectrogramme_canal_gauche.png', dpi=150, bbox_inches='tight')
+plt.close()
+print("Spectrogramme du canal gauche sauvegardé: spectrogramme_canal_gauche.png")
+
+# Répéter les mêmes étapes pour le canal droit (right channel)
+plt.figure(figsize=(10, 5))
+plt.specgram(r_channel, Fs=sample_freq, vmin=-20, vmax=50)
+plt.title('Spectrogramme - Canal Droit')
+plt.ylabel('Fréquence (Hz)')
+plt.xlabel('Temps (s)')
+plt.xlim(0, t_audio)
+plt.colorbar()
+plt.tight_layout()
+plt.savefig('spectrogramme_canal_droit.png', dpi=150, bbox_inches='tight')
+plt.close()
+print("Spectrogramme du canal droit sauvegardé: spectrogramme_canal_droit.png")
